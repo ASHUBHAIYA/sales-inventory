@@ -36,3 +36,83 @@
     transform: rotate(360deg);
   }
 }
+
+.horizontal-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust the spacing between inputs as needed */
+}
+
+.horizontal-form input {
+  flex: 1; /* Makes all input fields take equal space */
+  padding: 10px;
+  margin-right: 10px; /* Adds spacing between input fields */
+}
+
+.horizontal-form button {
+  padding: 10px 20px;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Ensures the container takes at least the full viewport height */
+}
+
+.vertical-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* Adjust the spacing between inputs as needed */
+}
+
+.vertical-form input {
+  padding: 10px;
+  width: 200px; /* Adjust width as needed */
+}
+
+.vertical-form button {
+  padding: 10px 20px;
+}
+.message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #dddddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.success-message {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.message p {
+  margin: 0;
+}
+
+.message button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.message button:hover {
+  background-color: #0056b3;
+}
