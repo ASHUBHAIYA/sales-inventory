@@ -1,25 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import app from "../firebase";
-import { getDatabase, ref, set, push } from "firebase/database";
-import { useNavigate } from 'react-router-dom';
-import "../App.css";
+import { getDatabase, ref, set, get } from "firebase/database";
+import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Homepagebutton from './Homepagebutton';
 import "./AddInventoryItemInternet.css";
-
-function AddInventoryItem() {
+function EditShopInventoryItem() {
   const navigate = useNavigate();
-  
-  const DeviceBrands = [
-    'Apple', 'Dell', 'HP', 'Lenovo', 'Asus', 'Acer', 'Microsoft', 
-    'Samsung', 'Sony', 'Toshiba', 'MSI', 'Razer', 'Huawei'
-    // Add more brands as needed
-  ];
+  const { firebaseId } = useParams();
 
-  const Issues = [
-    'Laptop Repair', 'Desktop Repair', 'Printer Repair', 'Tonner Refilling'
-    // Add more issues as needed
-  ];
+  const [loading, setLoading] = useState(true); // Loading state
 
   const [selectedTypeofIssue, setTypeofIssue] = useState('');
   const [selectedClientName, setClientName] = useState('');
@@ -30,39 +19,75 @@ function AddInventoryItem() {
   const [selectedClientMobile, setClientMobile] = useState('');
   const [selectedIssueDesc, setIssueDesc] = useState('');
   const [selectedRemark, setRemark] = useState('');
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [isValidMobile, setIsValidMobile] = useState(true);
   const [selectedDeviceBrand, setSelectedDeviceBrand] = useState('');
-  const [mandatoryFieldError, setMandatoryFieldError] = useState(false);
   const [selectedModel, setModel] = useState('');
   const [selectedServiceType, setServiceType] = useState('');
   const [selectedItemsReceived, setItemsReceived] = useState('');
   const [selectedDeviceCondition, setDeviceCondition] = useState('');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [isValidMobile, setIsValidMobile] = useState(true);
   
+  const [mandatoryFieldError, setMandatoryFieldError] = useState(false);
 
+  const DeviceBrands = [
+    'Apple', 'Dell', 'HP', 'Lenovo', 'Asus', 'Acer', 'Microsoft', 
+    'Samsung', 'Sony', 'Toshiba', 'MSI', 'Razer', 'Huawei'
+    // Add more brands as needed
+  ];
 
+  const Issues = [
+    'Laptop Repair', 'Desktop Repair', 'Printer Repair', 'Tonner Refilling'
+    // Add more issues as needed
+  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Set loading to true when fetching starts
 
-  const formatDate = (date) => {
-    const dd = String(date.getDate()).padStart(2, '0');
-    const mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const yyyy = date.getFullYear();
-    const hh = String(date.getHours()).padStart(2, '0');
-    const min = String(date.getMinutes()).padStart(2, '0');
-    const ss = String(date.getSeconds()).padStart(2, '0');
-    return `${dd}-${mm}-${yyyy} ${hh}:${min}:${ss}`;
-  };
+        const db = getDatabase(app);
+        const dbRef = ref(db, "nature/client/" + firebaseId);
+        const snapshot = await get(dbRef);
+        
+        if (snapshot.exists()) {
+          const targetObject = snapshot.val();
+          setTypeofIssue(targetObject.TypeofIssue || '');
+          setClientName(targetObject.ClientName || '');
+          setClientAddress(targetObject.ClientAddress || '');
+          setClientCity(targetObject.ClientCity || '');
+          setClientState(targetObject.ClientState || '');
+          setClientPin(targetObject.ClientPin || '');
+          setClientMobile(targetObject.ClientMobile || '');
+          setIssueDesc(targetObject.IssueDesc || '');
+          setRemark(targetObject.Remark || '');
+          setSelectedDeviceBrand(targetObject.laptopBrand || '');
+          setModel(targetObject.Model || '');
+          setServiceType(targetObject.ServiceType || '');
+          setItemsReceived(targetObject.ItemsReceived || '');
+          setDeviceCondition(targetObject.DeviceCondition || '');
+        } else {
+          alert("Client data not found");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("Error fetching data");
+      } finally {
+        setLoading(false); // Set loading to false when fetching completes
+      }
+    };
 
-  const saveData = async (e) => {
+    fetchData();
+  }, [firebaseId]);
+
+  const overwriteData = async (e) => {
+
     e.preventDefault(); // Prevent default form submission behavior
 
     // Check for empty mandatory fields
     if (
       !selectedTypeofIssue || !selectedClientName || !selectedClientAddress ||
       !selectedClientCity || !selectedClientState || !selectedClientPin ||
-      !selectedClientMobile  || !selectedDeviceBrand || 
-      !selectedModel || !selectedServiceType  
-      || !selectedItemsReceived || !selectedDeviceCondition
+      !selectedClientMobile || !selectedIssueDesc 
     ) {
       setMandatoryFieldError(true); // Show error message for mandatory fields
       setTimeout(() => {
@@ -71,11 +96,10 @@ function AddInventoryItem() {
       return;
     }
 
-    const db = getDatabase(app);
-    const newDocRef = push(ref(db, "nature/client"));
-    const currentDate = formatDate(new Date());
     try {
-      await set(newDocRef, {
+      const db = getDatabase(app);
+      const dbRef = ref(db, "nature/client/" + firebaseId);
+      await set(dbRef, {
         TypeofIssue: selectedTypeofIssue,
         ClientName: selectedClientName,
         ClientAddress: selectedClientAddress,
@@ -84,16 +108,12 @@ function AddInventoryItem() {
         ClientPin: selectedClientPin,
         ClientMobile: selectedClientMobile,
         IssueDesc: selectedIssueDesc,
-
-      Model: selectedModel,
-      ServiceType: selectedServiceType  ,
-      ItemsReceived : selectedItemsReceived,
-      DeviceCondition : selectedDeviceCondition,
-
         Remark: selectedRemark,
-        DeviceBrand: selectedDeviceBrand,
-        createdAt: currentDate,
-        updatedAt: currentDate
+        laptopBrand: selectedDeviceBrand,
+        Model: selectedModel,
+        ServiceType: selectedServiceType,
+        ItemsReceived: selectedItemsReceived,
+        DeviceCondition: selectedDeviceCondition
       });
       setShowSuccessMessage(true); // Show success message
       setTimeout(() => {
@@ -107,12 +127,7 @@ function AddInventoryItem() {
       }, 3000);
     }
   };
-
   const clearFields = () => {
-    setModel('');
-    setServiceType('');
-    setItemsReceived('');
-    setDeviceCondition('');
     setTypeofIssue('');
     setClientName('');
     setClientAddress('');
@@ -124,6 +139,10 @@ function AddInventoryItem() {
     setRemark('');
     setSelectedDeviceBrand('');
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Display loading message or spinner
+  }
 
   const handleMobileChange = (e) => {
     const mobileNumber = e.target.value;
@@ -141,8 +160,10 @@ function AddInventoryItem() {
   return (
     <>
       <Navbar />
+
+      <div className='editInv'>
       <div>
-        <form className="formclass" onSubmit={saveData}>
+        <form className="formclass" onSubmit={overwriteData}>
           <div className="form-group">
             <div className="form-row">
               <div className="form-group col-md-6">
@@ -320,8 +341,14 @@ function AddInventoryItem() {
           </div>
         )}
       </div>
+      </div>
+
+
+
+
+     
     </>
   );
 }
 
-export default AddInventoryItem;
+export default EditShopInventoryItem;

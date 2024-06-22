@@ -1,0 +1,80 @@
+.formclass{
+    margin: auto;
+    margin-top: 8%;
+    width: 60%;
+    border: 3px solid #73ad213d;
+    padding: 10px;
+}
+
+.message {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .success-message {
+    border-color: green;
+  }
+  
+  .error-message {
+    border-color: red;
+  }
+  
+  .invalid input {
+    border-color: red;
+  }
+  
+  .error-message p {
+    color: red;
+  }
+  
+  .success-message p {
+    color: green;
+  }
+  
+  .message button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  .message button:hover {
+    background-color: #e0e0e0;
+  }
+
+.btn-secondary{
+    margin-left: 10%;
+}  
+
+.mandatory{
+    color: crimson;
+}
+
+.remark{
+    min-height: calc(1.5em + .75rem + calc(var(--bs-border-width)* 2));
+    height: 123px;
+}
+
+.groupadjust{
+    width: 50%;
+}
+
+.pin{
+    width: 221%;
+}
+.textarea.form-control {
+    height: 123px;
+}
+
+.editInv{
+  margin-top: 10%;
+}

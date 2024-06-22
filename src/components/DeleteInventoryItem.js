@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import app from "../firebase";
 import {getDatabase, ref, get, remove  } from "firebase/database";
 import { useNavigate } from 'react-router-dom';
-
+import Navbar from '../components/Navbar';
 function DeleteInventoryItem() {
 
    const navigate = useNavigate();
@@ -36,7 +36,7 @@ function DeleteInventoryItem() {
     }
   
     return (
-        
+      <> <Navbar/>
     <div>
     <h1>READ</h1>
     <button onClick={fetchData}> Display Data </button>
@@ -53,6 +53,7 @@ function DeleteInventoryItem() {
       <button className='button1' onClick={ () => navigate("/read")}>GO READ PAGE</button>
 
   </div>
+  </>
     )
   }
   
