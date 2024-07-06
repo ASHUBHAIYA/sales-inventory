@@ -1,5 +1,12 @@
 export const MenuItems = [
     {
+        title : "My Tasks",
+        url : "/mytasks",
+        cName : "nav-links",
+        icon : "fa-solid fa-eye"
+
+    },
+    {
         title : "All Issues",
         url : "/view",
         cName : "nav-links",

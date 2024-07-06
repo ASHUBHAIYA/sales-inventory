@@ -1,6 +1,7 @@
 .App {
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 0px;
+    width: 100%;
   }
   
   h1 {
@@ -15,3 +16,76 @@
   .filter-container{
     margin-top: 8%;
     }
+  .tablehead {
+      background-color: #007bff;
+      color: white;
+      border-radius: 0.2rem;
+      }
+
+   
+    
+    
+   .th, tr{
+      text-align: center;
+   }
+    .button1{
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
+      border-radius: 0.7rem;
+    }
+
+    .form-group{
+      border-radius: 0.3rem;
+    }
+    .tableclass{
+      width: 100%;
+      height: 100%;
+      border: 3px 
+    }
+
+    .tableclassDiv{
+      width: 100%;
+      height: 100%;
+      border: 3px 
+    }
+    .filter-container {
+      margin-top: 8%;
+      width: 100%;
+      padding-left: 36px;
+  }
+  card {
+    width: -moz-fit-content;
+    width: fit-content;
+    padding-left: 10px;
+}
+.filterclass{
+  margin-left: 15px;
+    margin-right: 35px;
+}
+.label{
+  margin-left: 15px;
+}
+
+.truncated-text {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-text {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 10;
+}
+
+.tableclass td {
+  position: relative;
+}
+
+.tableclass td:hover .full-text {
+  display: block;
+}

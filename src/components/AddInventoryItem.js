@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import app from "../firebase";
 import { getDatabase, ref, set, push } from "firebase/database";
 import { useNavigate } from 'react-router-dom';
-import "../App.css";
 import Navbar from '../components/Navbar';
 import Homepagebutton from './Homepagebutton';
 import "./AddInventoryItemInternet.css";
@@ -25,11 +24,10 @@ function AddInventoryItem() {
   const [selectedClientName, setClientName] = useState('');
   const [selectedClientAddress, setClientAddress] = useState('');
   const [selectedClientCity, setClientCity] = useState('');
-  const [selectedClientState, setClientState] = useState('');
-  const [selectedClientPin, setClientPin] = useState('');
   const [selectedClientMobile, setClientMobile] = useState('');
   const [selectedIssueDesc, setIssueDesc] = useState('');
   const [selectedRemark, setRemark] = useState('');
+  const [selectedStatus, setStatus] = useState('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [isValidMobile, setIsValidMobile] = useState(true);
@@ -39,9 +37,6 @@ function AddInventoryItem() {
   const [selectedServiceType, setServiceType] = useState('');
   const [selectedItemsReceived, setItemsReceived] = useState('');
   const [selectedDeviceCondition, setDeviceCondition] = useState('');
-  
-
-
 
   const formatDate = (date) => {
     const dd = String(date.getDate()).padStart(2, '0');
@@ -59,7 +54,7 @@ function AddInventoryItem() {
     // Check for empty mandatory fields
     if (
       !selectedTypeofIssue || !selectedClientName || !selectedClientAddress ||
-      !selectedClientCity || !selectedClientState || !selectedClientPin ||
+      !selectedClientCity  ||
       !selectedClientMobile  || !selectedDeviceBrand || 
       !selectedModel || !selectedServiceType  
       || !selectedItemsReceived || !selectedDeviceCondition
@@ -80,8 +75,6 @@ function AddInventoryItem() {
         ClientName: selectedClientName,
         ClientAddress: selectedClientAddress,
         ClientCity: selectedClientCity,
-        ClientState: selectedClientState,
-        ClientPin: selectedClientPin,
         ClientMobile: selectedClientMobile,
         IssueDesc: selectedIssueDesc,
 
@@ -92,13 +85,15 @@ function AddInventoryItem() {
 
         Remark: selectedRemark,
         DeviceBrand: selectedDeviceBrand,
+        Status: 'Created',  // Created,  In progress
         createdAt: currentDate,
         updatedAt: currentDate
       });
       setShowSuccessMessage(true); // Show success message
       setTimeout(() => {
         setShowSuccessMessage(false); // Automatically close success message after 3 seconds
-      }, 3000);
+        navigate("/view");
+      }, 2000);
       clearFields(); // Clear fields after successful save
     } catch (error) {
       setShowErrorMessage(true); // Show error message
@@ -117,8 +112,6 @@ function AddInventoryItem() {
     setClientName('');
     setClientAddress('');
     setClientCity('');
-    setClientState('');
-    setClientPin('');
     setClientMobile('');
     setIssueDesc('');
     setRemark('');
@@ -127,14 +120,16 @@ function AddInventoryItem() {
 
   const handleMobileChange = (e) => {
     const mobileNumber = e.target.value;
-    setClientMobile(mobileNumber); // Update input value
+    if (/^\d{0,10}$/.test(mobileNumber)) {
+      setClientMobile(mobileNumber); // Update input value
 
-    // Validate mobile number
-    if (/^\d{10}$/.test(mobileNumber)) {
-      setIsValidMobile(true);
-      setShowErrorMessage(false); // Remove error message on valid input
-    } else {
-      setIsValidMobile(false);
+      // Validate mobile number
+      if (/^\d{10}$/.test(mobileNumber)) {
+        setIsValidMobile(true);
+        setShowErrorMessage(false); // Remove error message on valid input
+      } else {
+        setIsValidMobile(false);
+      }
     }
   };
 
@@ -159,7 +154,25 @@ function AddInventoryItem() {
                   ))}
                 </select>
               </div>
-              <div className="form-group col-md-6">
+                  
+              <div className={`form-group col-md-6}`}>
+                <label>Client Name<span className="mandatory">*</span></label>
+                <input
+                  type="text"
+                  value={selectedClientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="Client Name"
+                  className="form-control"
+                  maxLength="50"
+                />
+              </div>
+              
+
+
+            </div>
+            <div className="form-row">
+
+            <div className="form-group col-md-6">
             <label>Device Brand<span className="mandatory">*</span></label>
             <select
               value={selectedDeviceBrand}
@@ -172,31 +185,8 @@ function AddInventoryItem() {
               ))}
             </select>
           </div>
-            </div>
-            <div className="form-row">
-              <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
-                <label>Client Name<span className="mandatory">*</span></label>
-                <input
-                  type="text"
-                  value={selectedClientName}
-                  onChange={(e) => setClientName(e.target.value)}
-                  placeholder="Client Name"
-                  className="form-control"
-                />
-              </div>
-              <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
-                <label>Model</label><span className="mandatory">*</span>
-                <input
-                  type="text"
-                  value={selectedModel}
-                  onChange={(e) => setModel(e.target.value)}
-                  placeholder="Enter Model"
-                  className="form-control"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="form-row">
+              
+
           <div className="form-group col-md-6">
             <label>Address<span className="mandatory">*</span></label>
             <input 
@@ -205,32 +195,43 @@ function AddInventoryItem() {
               value={selectedClientAddress}
               onChange={(e) => setClientAddress(e.target.value)}
               placeholder="Enter Address"
+              maxLength="150"
             />
           </div>
 
-          <div className="form-group col-md-6">
-            <label>Service Type<span className="mandatory">*</span></label>
-            <input 
-              type="text" 
-              className="form-control" 
-              value={selectedServiceType}
-              onChange={(e) => setServiceType(e.target.value)}
-              placeholder="Type of service"
-            />
+
+
+            </div>
           </div>
+          <div className="form-row">
+          <div className={`form-group col-md-6`}>
+                <label>Model</label><span className="mandatory">*</span>
+                <input
+                  type="text"
+                  value={selectedModel}
+                  onChange={(e) => setModel(e.target.value)}
+                  placeholder="Enter Model"
+                  className="form-control"
+                  maxLength="100"
+                />
+              </div>
+
+              <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
+                <label>Mobile<span className="mandatory">*</span></label>
+                <input
+                  type="text"
+                  value={selectedClientMobile}
+                  onChange={handleMobileChange}
+                  placeholder="Mobile"
+                  className={`form-control pin ${isValidMobile ? '' : 'invalid'}` }
+                  pattern="\d{10}"
+                  maxLength="10"
+                />
+                {!isValidMobile && <p className="error-message">Please enter a 10-digit number</p>}
+              </div>
           </div>
 
           <div className="form-row">
-          <div className="form-group col-md-6">
-              <label>State<span className="mandatory">*</span></label>
-              <input 
-                type="text" 
-                className="form-control" 
-                value={selectedClientState}
-                onChange={(e) => setClientState(e.target.value)}
-              />
-            </div>
-
             <div className="form-group col-md-6">
               <label>Items Received<span className="mandatory">*</span></label>
               <input 
@@ -238,21 +239,23 @@ function AddInventoryItem() {
                 className="form-control" 
                 value={selectedItemsReceived}
                 onChange={(e) => setItemsReceived(e.target.value)}
+                maxLength="150"
               />
             </div>   
-
-          </div>
-
-          <div className="form-row">
-          <div className="form-group col-md-6">
+            <div className="form-group col-md-6">
               <label>City<span className="mandatory">*</span></label>
               <input 
                 type="text" 
                 className="form-control" 
                 value={selectedClientCity}
                 onChange={(e) => setClientCity(e.target.value)}
+                maxLength="70"
               />
             </div>
+          </div>
+
+          <div className="form-row">
+            
 
             <div className="form-group col-md-6">
               <label>Physical Device Condition<span className="mandatory">*</span></label>
@@ -261,42 +264,24 @@ function AddInventoryItem() {
                 className="form-control" 
                 value={selectedDeviceCondition}
                 onChange={(e) => setDeviceCondition(e.target.value)}
+                maxLength="150"
               />
             </div>
           </div>
           <div className="form-row">
-            <div className="form-group groupadjust">
-            <div className="form-group col-md-6">
-              <label>PinCode<span className="mandatory">*</span></label>
-              <input 
-                type="text" 
-                className="form-control pin"
-                value={selectedClientPin}
-                onChange={(e) => setClientPin(e.target.value)}
-              />
-            </div>
-          <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
-            <label>Mobile<span className="mandatory">*</span></label>
-            <input
-              type="text"
-              value={selectedClientMobile}
-              onChange={handleMobileChange}
-              placeholder="Mobile"
-              className={`form-control pin ${isValidMobile ? '' : 'invalid'}` }
-            />
-            {!isValidMobile && <p className="error-message">Please enter a 10-digit number</p>}
-          </div>
-              </div>
-              <div className="form-group col-md-6">
-            <label>Remark</label>
-              <textarea  
-                type="text" 
-                className="form-control remark"
-                value={selectedRemark}
-                onChange={(e) => setRemark(e.target.value)}
-              />
-            </div>
+            
 
+          <div className="form-group col-md-10">
+            <label>Service Type<span className="mandatory">*</span></label>
+            <textarea  
+              type="text" 
+              className="form-control" 
+              value={selectedServiceType}
+              onChange={(e) => setServiceType(e.target.value)}
+              placeholder="Type of service"
+              maxLength="150"
+            />
+          </div>
           </div>
           <button type="submit" className="btn btn-primary">Save</button>
           <button type="button" className="btn btn-secondary" onClick={clearFields}>Clear</button>

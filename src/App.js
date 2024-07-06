@@ -17,6 +17,7 @@ import UpdateProfile from './components/UpdateProfile';
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import RequireAuth from './components/RequireAuth';
+import Tasks from './components/Tasks';
 
 function App() {
   return (
@@ -73,6 +74,11 @@ function App() {
             <Route path="/edit-itemShop/:firebaseId" element={
               <RequireAuth>
                 <EditShopInventoryItem />
+              </RequireAuth>
+            } />
+            <Route path="/mytasks" element={
+              <RequireAuth>
+                <Tasks />
               </RequireAuth>
             } />
             <Route path="*" element={<NotFound />} />

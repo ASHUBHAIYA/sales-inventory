@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import app from "../firebase";
 import { getDatabase, ref, set, push } from "firebase/database";
 import { useNavigate } from 'react-router-dom';
-import "../App.css";
 import Navbar from '../components/Navbar';
 import Homepagebutton from './Homepagebutton';
 import "./AddInventoryItemInternet.css";
@@ -25,8 +24,6 @@ function AddInventoryItemInternet() {
   const [selectedClientName, setClientName] = useState('');
   const [selectedClientAddress, setClientAddress] = useState('');
   const [selectedClientCity, setClientCity] = useState('');
-  const [selectedClientState, setClientState] = useState('');
-  const [selectedClientPin, setClientPin] = useState('');
   const [selectedClientMobile, setClientMobile] = useState('');
   const [selectedIssueDesc, setIssueDesc] = useState('');
   const [selectedRemark, setRemark] = useState('');
@@ -52,7 +49,7 @@ function AddInventoryItemInternet() {
     // Check for empty mandatory fields
     if (
       !selectedTypeofIssue || !selectedClientName || !selectedClientAddress ||
-      !selectedClientCity || !selectedClientState || !selectedClientPin ||
+      !selectedClientCity || 
       !selectedClientMobile || !selectedIssueDesc 
     ) {
       setMandatoryFieldError(true); // Show error message for mandatory fields
@@ -71,19 +68,19 @@ function AddInventoryItemInternet() {
         ClientName: selectedClientName,
         ClientAddress: selectedClientAddress,
         ClientCity: selectedClientCity,
-        ClientState: selectedClientState,
-        ClientPin: selectedClientPin,
         ClientMobile: selectedClientMobile,
         IssueDesc: selectedIssueDesc,
         Remark: selectedRemark,
         laptopBrand: selectedLaptopBrand,
+        Status: 'created',
         createdAt: currentDate,
         updatedAt: currentDate
       });
       setShowSuccessMessage(true); // Show success message
       setTimeout(() => {
         setShowSuccessMessage(false); // Automatically close success message after 3 seconds
-      }, 3000);
+        navigate("/view");
+      }, 2000);
       clearFields(); // Clear fields after successful save
     } catch (error) {
       setShowErrorMessage(true); // Show error message
@@ -98,8 +95,6 @@ function AddInventoryItemInternet() {
     setClientName('');
     setClientAddress('');
     setClientCity('');
-    setClientState('');
-    setClientPin('');
     setClientMobile('');
     setIssueDesc('');
     setRemark('');
@@ -140,19 +135,7 @@ function AddInventoryItemInternet() {
                   ))}
                 </select>
               </div>
-              <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
-                <label>Issue Description<span className="mandatory">*</span></label>
-                <input
-                  type="text"
-                  value={selectedIssueDesc}
-                  onChange={(e) => setIssueDesc(e.target.value)}
-                  placeholder="Describe Issue"
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
+              <div className={`form-group col-md-6`}>
                 <label>Client Name<span className="mandatory">*</span></label>
                 <input
                   type="text"
@@ -160,21 +143,25 @@ function AddInventoryItemInternet() {
                   onChange={(e) => setClientName(e.target.value)}
                   placeholder="Client Name"
                   className="form-control"
-                />
-              </div>
-              <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
-                <label>Remark</label>
-                <input
-                  type="text"
-                  value={selectedRemark}
-                  onChange={(e) => setRemark(e.target.value)}
-                  placeholder="Enter Remark"
-                  className="form-control"
+                  maxLength="70"
                 />
               </div>
             </div>
-          </div>
-          <div className="form-group">
+            <div className="form-row">
+            <div className={`form-group col-md-6`}>
+                <label>Issue Description<span className="mandatory">*</span></label>
+                <textarea
+                  type="text"
+                  value={selectedIssueDesc}
+                  onChange={(e) => setIssueDesc(e.target.value)}
+                  placeholder="Describe Issue"
+                  className="form-control"
+                  maxLength="150"
+                />
+              </div>
+
+             
+              <div className="form-group col-md-6">
             <label>Address<span className="mandatory">*</span></label>
             <input 
               type="text" 
@@ -182,37 +169,30 @@ function AddInventoryItemInternet() {
               value={selectedClientAddress}
               onChange={(e) => setClientAddress(e.target.value)}
               placeholder="Enter Address"
+              maxLength="150"
             />
           </div>
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label>State<span className="mandatory">*</span></label>
-              <input 
-                type="text" 
-                className="form-control" 
-                value={selectedClientState}
-                onChange={(e) => setClientState(e.target.value)}
-              />
             </div>
-            <div className="form-group col-md-4">
+          </div>
+          
+          <div className="form-row">
+          <div className="form-group col-md-6">
+            </div>
+            <div className="form-group col-md-6">
               <label>City<span className="mandatory">*</span></label>
               <input 
                 type="text" 
                 className="form-control" 
                 value={selectedClientCity}
                 onChange={(e) => setClientCity(e.target.value)}
+                maxLength="70"
               />
             </div>
-            <div className="form-group col-md-2">
-              <label>PinCode<span className="mandatory">*</span></label>
-              <input 
-                type="text" 
-                className="form-control"
-                value={selectedClientPin}
-                onChange={(e) => setClientPin(e.target.value)}
-              />
-            </div>
+            
           </div>
+          <div className="form-row">
+          <div className="form-group col-md-6">
+            </div>
           <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
             <label>Mobile<span className="mandatory">*</span></label>
             <input
@@ -221,10 +201,12 @@ function AddInventoryItemInternet() {
               onChange={handleMobileChange}
               placeholder="Mobile"
               className={`form-control ${isValidMobile ? '' : 'invalid'}`}
+               pattern="\d{10}"
+              maxLength="10"
             />
             {!isValidMobile && <p className="error-message">Please enter a 10-digit number</p>}
           </div>
-         
+          </div>    
           <button type="submit" className="btn btn-primary">Save</button>
           <button type="button" className="btn btn-secondary" onClick={clearFields}>Clear</button>
         </form>

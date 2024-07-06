@@ -1,22 +1,22 @@
 // src/components/Signup.js
 import React, { useRef, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Card, Alert } from "react-bootstrap"
+import { Form, Button, Card, Alert } from "react-bootstrap";
 import './customStyles.css';
 import { getDatabase, ref, set, push } from "firebase/database";
 import app from "../firebase";
 
-const Signup = () => {
+const Signup = ({ onSignupSuccess }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const nameRef = useRef();
+  const mobileRef = useRef();
+  const roleRef = useRef();
   const { signup } = useAuth();
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,21 +27,23 @@ const Signup = () => {
 
     try {
       setError('');
+      setSuccess('');
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
 
-
       const db = getDatabase(app);
-    const newDocRef = push(ref(db, "auth/client"));
- 
+      const newDocRef = push(ref(db, "auth/client"));
       await set(newDocRef, {
         email: emailRef.current.value,
-        auth: "worker"
+        name: nameRef.current.value,
+        mobile: mobileRef.current.value,
+        role: roleRef.current.value
       });
-      
 
-
-      navigate('/view');
+      setSuccess('Account created successfully!');
+      setTimeout(() => {
+        onSignupSuccess(); // Close the modal after 2 seconds
+      }, 2000);
     } catch {
       setError('Failed to create an account');
     }
@@ -51,11 +53,19 @@ const Signup = () => {
 
   return (
     <>
-      <Card className="custom-card">
+      <Card className="custom-cardSignup">
         <Card.Body>
-          <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
+          {success && <Alert variant="success">{success}</Alert>}
           <Form onSubmit={handleSubmit}>
+            <Form.Group id="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control type="text" ref={nameRef} required />
+            </Form.Group>
+            <Form.Group id="mobile">
+              <Form.Label>Mobile Number</Form.Label>
+              <Form.Control type="text" ref={mobileRef} required />
+            </Form.Group>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
@@ -68,15 +78,19 @@ const Signup = () => {
               <Form.Label>Password Confirmation</Form.Label>
               <Form.Control type="password" ref={passwordConfirmRef} required />
             </Form.Group>
+            <Form.Group id="role">
+              <Form.Label>Role</Form.Label>
+              <Form.Control as="select" ref={roleRef} required>
+              <option value="worker">Worker</option>
+                <option value="admin">Admin</option>
+              </Form.Control>
+            </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
-              Sign Up
+              Add User
             </Button>
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/login">Log In</Link>
-      </div>
     </>
   );
 };

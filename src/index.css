@@ -1,4 +1,11 @@
 body {
+  background-color: rgba(193, 193, 193, 0.181);
+
+  background-size: auto;
+  /* Optional: Adjust the following properties as needed */
   margin: 0;
   padding: 0;
+  height: 100%;
+  width: 100%;
 }
+
