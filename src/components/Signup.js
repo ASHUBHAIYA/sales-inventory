@@ -53,7 +53,7 @@ const Signup = ({ onSignupSuccess }) => {
 
   return (
     <>
-      <Card className="custom-cardSignup">
+      <Card className="custom-card Signup">
         <Card.Body>
           {error && <Alert variant="danger">{error}</Alert>}
           {success && <Alert variant="success">{success}</Alert>}

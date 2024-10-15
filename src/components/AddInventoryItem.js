@@ -155,7 +155,7 @@ function AddInventoryItem() {
                 </select>
               </div>
                   
-              <div className={`form-group col-md-6}`}>
+              <div className="form-group col-md-6">
                 <label>Client Name<span className="mandatory">*</span></label>
                 <input
                   type="text"
@@ -195,7 +195,7 @@ function AddInventoryItem() {
               value={selectedClientAddress}
               onChange={(e) => setClientAddress(e.target.value)}
               placeholder="Enter Address"
-              maxLength="150"
+              maxLength="200"
             />
           </div>
 
@@ -279,7 +279,7 @@ function AddInventoryItem() {
               value={selectedServiceType}
               onChange={(e) => setServiceType(e.target.value)}
               placeholder="Type of service"
-              maxLength="150"
+              maxLength="300"
             />
           </div>
           </div>

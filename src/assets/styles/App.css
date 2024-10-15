@@ -1,73 +1,76 @@
+/* General styling */
 .App {
-    font-family: Arial, sans-serif;
-    padding: 0px;
-    width: 100%;
-  }
-  
-  h1 {
-    font-size: 24px;
-  }
-  
-  input, button {
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-  }
-  .filter-container{
-    margin-top: 8%;
-    }
-  .tablehead {
-      background-color: #007bff;
-      color: white;
-      border-radius: 0.2rem;
-      }
-
-   
-    
-    
-   .th, tr{
-      text-align: center;
-   }
-    .button1{
-      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
-      border-radius: 0.7rem;
-    }
-
-    .form-group{
-      border-radius: 0.3rem;
-    }
-    .tableclass{
-      width: 100%;
-      height: 100%;
-      border: 3px 
-    }
-
-    .tableclassDiv{
-      width: 100%;
-      height: 100%;
-      border: 3px 
-    }
-    .filter-container {
-      margin-top: 8%;
-      width: 100%;
-      padding-left: 36px;
-  }
-  card {
-    width: -moz-fit-content;
-    width: fit-content;
-    padding-left: 10px;
-}
-.filterclass{
-  margin-left: 15px;
-    margin-right: 35px;
-}
-.label{
-  margin-left: 15px;
+  font-family: Arial, sans-serif;
+  padding: 0;
+  width: 100%;
 }
 
+h1 {
+  font-size: 24px;
+}
+
+input, button {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* Filter container styling */
+.filter-container {
+  margin-top: 8%;
+  width: 57%;
+  padding-left: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.filter-container select {
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 250px;
+}
+
+/* Table styling */
+.tablehead {
+  background-color: #007bff;
+  color: white;
+  border-radius: 0.2rem;
+}
+
+.th, tr {
+  text-align: center;
+}
+
+.tableclass {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableclassDiv {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+.tableclass td, .tableclass th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.button1 {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
+  border-radius: 0.7rem;
+}
+
+/* Truncated text styling */
 .truncated-text {
   display: inline-block;
-  max-width: 100%;
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -88,4 +91,47 @@
 
 .tableclass td:hover .full-text {
   display: block;
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
+  .filter-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-left: 10px;
+      padding-top: 14%;
+  }
+
+  .filter-container select {
+      width: 100%;
+  }
+
+  .tableclassDiv {
+      overflow-x: auto;
+  }
+
+  .tableclass th, .tableclass td {
+      font-size: 14px;
+      padding: 5px;
+  }
+
+  .tableclass {
+      width: 100%;
+      font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .tableclass th, .tableclass td {
+      font-size: 12px;
+  }
+
+  .tableclass {
+      font-size: 12px;
+  }
+
+  .filter-container {
+      padding-left: 5px;
+      padding-top: 14%;
+  }
 }

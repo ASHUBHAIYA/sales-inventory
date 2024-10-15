@@ -171,15 +171,7 @@ function AddInventoryItemInternet() {
               placeholder="Enter Address"
               maxLength="150"
             />
-          </div>
-            </div>
-          </div>
-          
-          <div className="form-row">
-          <div className="form-group col-md-6">
-            </div>
-            <div className="form-group col-md-6">
-              <label>City<span className="mandatory">*</span></label>
+            <label>City<span className="mandatory">*</span></label>
               <input 
                 type="text" 
                 className="form-control" 
@@ -187,13 +179,6 @@ function AddInventoryItemInternet() {
                 onChange={(e) => setClientCity(e.target.value)}
                 maxLength="70"
               />
-            </div>
-            
-          </div>
-          <div className="form-row">
-          <div className="form-group col-md-6">
-            </div>
-          <div className={`form-group col-md-6 ${isValidMobile ? '' : 'invalid'}`}>
             <label>Mobile<span className="mandatory">*</span></label>
             <input
               type="text"
@@ -205,7 +190,9 @@ function AddInventoryItemInternet() {
               maxLength="10"
             />
             {!isValidMobile && <p className="error-message">Please enter a 10-digit number</p>}
+          
           </div>
+            </div>
           </div>    
           <button type="submit" className="btn btn-primary">Save</button>
           <button type="button" className="btn btn-secondary" onClick={clearFields}>Clear</button>

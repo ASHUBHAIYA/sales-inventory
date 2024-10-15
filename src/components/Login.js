@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <>
-      <Card className="custom-card">
+      <Card className="custom-card login">
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -47,14 +47,15 @@ export default function Login() {
               Log In
             </Button>
           </Form>
-          <div className="w-100 text-center mt-3">
+        { /* <div className="w-100 text-center mt-3">
             <Link to="/forgot-password">Forgot Password?</Link>
-          </div>
+          </div> */}
         </Card.Body>
       </Card>
+      { /*
       <div className="w-100 text-center mt-2">
         Need an account? <Link to="/signup">Sign Up</Link>
-      </div>
+      </div>*/}
     </>
   );
 }

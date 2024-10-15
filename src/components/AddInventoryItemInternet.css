@@ -1,85 +1,137 @@
-.formclass{
-    margin: auto;
-    margin-top: 8%;
-    width: 60%;
-    padding: 10px;
-    border-radius: 0.3rem;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
+.formclass {
+  margin: auto;
+  margin-top: 8%;
+  width: 60%;
+  padding: 10px;
+  border-radius: 0.3rem;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
 }
+
 .message {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-  
-  .success-message {
-    border-color: green;
-  }
-  
-  .error-message {
-    border-color: red;
-  }
-  
-  .invalid input {
-    border-color: red;
-  }
-  
-  .error-message p {
-    color: red;
-  }
-  
-  .success-message p {
-    color: green;
-  }
-  
-  .message button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-  
-  .message button:hover {
-    background-color: #e0e0e0;
-  }
-
-.btn-secondary{
-    margin-left: 10%;
-}  
-
-.mandatory{
-    color: crimson;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
-.remark{
-    min-height: calc(1.5em + .75rem + calc(var(--bs-border-width)* 2));
-    height: 123px;
+.success-message {
+  border-color: green;
 }
 
-.groupadjust{
-    width: 50%;
+.error-message {
+  border-color: red;
 }
 
-.pin{
-    width: 221%;
+.invalid input {
+  border-color: red;
 }
+
+.error-message p {
+  color: red;
+}
+
+.success-message p {
+  color: green;
+}
+
+.message button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.message button:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-secondary {
+  margin-left: 10%;
+}
+
+.mandatory {
+  color: crimson;
+}
+
+.remark {
+  min-height: calc(1.5em + .75rem + calc(var(--bs-border-width) * 2));
+  height: 123px;
+}
+
+.groupadjust {
+  width: 50%;
+}
+
+.pin {
+  width: 221%;
+}
+
 .textarea.form-control {
-    height: 123px;
+  height: 123px;
 }
 
-.editInv{
+.editInv {
   margin-top: 10%;
 }
 
-.buttoncompleted{
+.buttoncompleted {
   background: seagreen;
 }
 
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .formclass {
+      width: 90%; /* Make form wider on smaller screens */
+      margin-top: 21%;
+  }
+
+  .message {
+      width: 90%; /* Make message box wider */
+      left: 5%;   /* Center it on small screens */
+      right: 5%;  /* Center it on small screens */
+  }
+
+  .btn-primary {
+    margin-left: 0; /* Remove left margin */
+    display: block; /* Stack buttons */
+    width: 100%; /* Full width */
+    margin-top: 10px; /* Spacing between buttons */
+}
+
+  .btn-secondary {
+      margin-left: 0; /* Remove left margin */
+      display: block; /* Stack buttons */
+      width: 100%; /* Full width */
+      margin-top: 10px; /* Spacing between buttons */
+  }
+
+  .groupadjust,
+  .pin {
+      width: 100%; /* Full width on smaller screens */
+  }
+
+  .remark {
+      height: auto; /* Allow height to adjust */
+  }
+}
+
+@media (max-width: 480px) {
+  .formclass {
+      padding: 5px; /* Reduce padding */
+  }
+
+  .message {
+      padding: 15px; /* Reduce padding for message */
+  }
+
+  .textarea.form-control {
+      height: auto; /* Allow textarea height to adjust */
+  }
+}
