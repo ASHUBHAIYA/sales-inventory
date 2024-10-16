@@ -1,7 +1,5 @@
 # Use the official Node.js image from the Docker Hub
-FROM alpine:3.19
-
-ENV NODE_VERSION 22.9.0
+FROM node:14
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -19,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run your app
-CMD node index.js
+CMD ["npm", "start"]
