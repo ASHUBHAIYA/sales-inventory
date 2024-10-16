@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install the app dependencies
-RUN npm install --production
+RUN npm install=production
 
 # Copy the rest of your application code
 COPY . .
